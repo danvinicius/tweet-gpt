@@ -3,3 +3,4 @@ from flask import Flask
 app = Flask(__name__)
 
 from app.controllers import default
+from app.services import ai_analysis, social_media
