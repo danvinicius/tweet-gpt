@@ -7,6 +7,27 @@ ai = ai_analysis.AI()
 from app.services import social_media
 media = social_media.SocialMedia()
 
+'''
+@app.route("/")
+def root():
+    return "<h1>Flask API</h1>"
+
+@app.route("/users", methods=["POST"])
+def create():
+    
+
+@app.route("/usuarios/<int:id>", methods=["GET"])
+def readOne(id: int):
+    
+    
+@app.route("/usuarios/<int:id>", methods=["PUT"])
+def update(id: int):
+    
+
+@app.route("/usuarios/<int:id>", methods=["DELETE"])
+def delete(id: int):
+'''
+
 # ex: http://localhost:5000/search?tag=brasil
 @app.route('/search')
 def search_tweet():
