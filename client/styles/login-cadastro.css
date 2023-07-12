@@ -1,0 +1,90 @@
+@import 'main.css';
+
+.form__container {
+    border-radius: .75em;
+    background: linear-gradient(136deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.70) 0.01%, rgba(255, 255, 255, 0.20) 100%);
+    box-shadow: 0px 40px 40px 0px rgba(0, 0, 0, 0.10);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.form__header {
+    margin-bottom: 2.5em;
+}
+
+.form__header__title h2 {
+    font-weight: 200;
+    font-size: 1.5em;
+}
+
+.form__body {
+    margin-bottom: 3em;
+}
+
+.form__input,
+.form__label {
+    width: 100%;
+}
+
+.form__input {
+    padding: .75em 1em;
+    background: var(--secondary-text-color);
+}
+
+.form__button {
+    margin-top: .6em;
+    background: var(--main-button-color);
+    display: flex;
+    padding: .75em 0;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondary-text-color);
+}
+
+.form__footer {
+    position: relative;
+}
+
+.form__footer::after, .form__footer::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 1.25em;
+    background: var(--main-text-color);
+    height: 1px;
+}
+
+.form__footer::after {
+    left: 1em;
+}
+
+.form__footer::before {
+    right: 1em;
+}
+
+.form__footer__link {
+    text-decoration: none;
+    margin-top: .3em;
+    display: inline-block;
+    color: var(--main-link-color);
+}
+
+@media screen and (min-width: 769px) {
+    .app__container {
+        align-items: center;
+    }
+
+    .form__container {
+        width: 25em;
+        padding: 2.1em 4.4em;
+    }
+}

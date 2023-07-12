@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+
+:root {
+    --main-bg-color: #96c3e3;
+    --main-text-color: #9a9a9a;
+    --secondary-text-color: #ffffff;
+    --main-button-color: #38d386;
+    --main-link-color: #1fa2da;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+button {
+    cursor: pointer;
+}
+
+input, button {
+    outline: none;
+    border: none;
+    border-radius: .75em;
+}
+
+body {
+    color: var(--main-text-color);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.app__container {
+    padding: 1.5em;
+    width: 100%;
+    height: 100vh;
+    background: var(--main-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
