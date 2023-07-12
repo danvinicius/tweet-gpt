@@ -12,5 +12,6 @@ migrate = Migrate(app, db, command='migrate')
 
 manager = Manager(app)
 
+from app.models import tables
 from app.controllers import default
 from app.services import ai_analysis, social_media

@@ -1,5 +1,7 @@
 from flask import request, jsonify
-from app import app
+from app import app, db
+
+from app.models.tables import User
 
 from app.services import ai_analysis
 ai = ai_analysis.AI()
@@ -7,26 +9,38 @@ ai = ai_analysis.AI()
 from app.services import social_media
 media = social_media.SocialMedia()
 
-'''
+
 @app.route("/")
 def root():
     return "<h1>Flask API</h1>"
 
-@app.route("/users", methods=["POST"])
-def create():
-    
 
-@app.route("/usuarios/<int:id>", methods=["GET"])
-def readOne(id: int):
-    
-    
-@app.route("/usuarios/<int:id>", methods=["PUT"])
-def update(id: int):
-    
+@app.route("/usuarios", methods=["POST"])
+def cadastro():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
 
-@app.route("/usuarios/<int:id>", methods=["DELETE"])
-def delete(id: int):
-'''
+        if name and email and password:
+            usuario = User(name, email, password)
+            db.session.add(usuario)
+            db.session.commit()
+
+
+@app.route("/usuarios/login", methods=["POST"])
+def login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        if email and password:
+            usuario = User.query.filter_by(email=email).first()
+
+            if usuario and usuario.check_password(password):
+                return jsonify({'res': 'Login bem-sucedido!'})
+
+    return jsonify({'res': 'Credenciais inválidas ou login falhou.'})
 
 # ex: http://localhost:5000/search?tag=brasil
 @app.route('/search')
