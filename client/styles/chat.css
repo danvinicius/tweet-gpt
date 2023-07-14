@@ -1,0 +1,110 @@
+@import 'main.css';
+
+.chat__container {
+    border-radius: .75em;
+    background: linear-gradient(136deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.70) 0.01%, rgba(255, 255, 255, 0.20) 100%);
+    box-shadow: 0px 40px 40px 0px rgba(0, 0, 0, 0.10);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2em 1em;
+    gap: 1em;
+}
+
+.chat {
+    height: 55vh;
+    overflow: hidden;
+}
+
+.chat__inner {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.chat__message__container {
+    display: flex;
+    gap: .75em;
+    align-items: flex-start;
+}
+
+.message {
+    padding: .75em;
+    width: max-content;
+    max-width: 70%;
+    text-align: left;
+    margin-bottom: 1.5em;
+}
+
+.user .message {
+    background: var(--secondary-text-color);
+    color: var(--main-text-color);
+}
+
+.bot .message {
+    background: var(--main-bg-color);
+    color: var(--secondary-text-color);
+}
+
+.tweet .message {
+    background: var(--twitter-bg-color);
+    color: var(--secondary-text-color);
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+}
+
+.message__twitter__user {
+    font-size: 12px;
+    color: var(--main-text-color);
+}
+
+.tweet .message .message__twitter__icons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5em;
+    margin-top: 0.45em;
+}
+
+.left {
+    margin-right: auto;
+    border-radius: 0 .75em .75em .75em;
+}
+
+.right {
+    margin-left: auto;
+    border-radius: .75em 0 .75em .75em;
+}
+
+.chat__footer {
+    display: flex;
+}
+
+.chat__input {
+    width: 90%;
+}
+
+.chat__input input {
+    width: 100%;
+    border-radius: .75em 0 0 .75em;
+    padding: .5em 1em;
+    color: var(--main-text-color);
+}
+
+.chat__send__button button {
+    border-radius: 0 .75em .75em 0;
+    padding: .5em 1em;
+    color: var(--secondary-text-color);
+    background: var(--main-button-color);
+}
+
+@media screen and (min-width: 769px) {
+    .app__container {
+        align-items: center;
+    }
+
+    .chat__container {
+        width: 40em;
+        padding: 2.1em 4.4em;
+    }
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/chat.css" />
+    <title>Chat Tweet GPT</title>
+  </head>
+  <body>
+    <div class="app__container">
+      <div class="chat__container">
+        <div class="chat">
+          <div class="chat__inner">
+            <div class="chat__inner__container">
+              <div class="chat__message__container tweet">
+                <img
+                  src="/img/logo-do-twitter.svg"
+                  alt="Logo do twitter"
+                  title="Twitter"
+                />
+                <div class="message left">
+                  <span class="message__twitter__user">@dzn__0</span>
+                  <p>Olá, mundo</p>
+                  <div class="message__twitter__icons">
+                    <img src="/img/comentario.svg" alt="" />
+                    <img src="/img/retweet.svg" alt="" />
+                    <img src="/img/curtida.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+              <div class="chat__message__container bot">
+                <img
+                  src="/img/cabeca-do-bot.svg"
+                  alt="Ícone de robô"
+                  title="Tweet GPT"
+                />
+                <div class="message left">
+                  <p>
+                    Olá, twitter
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat__footer">
+          <div class="chat__input">
+            <label for="message_input">
+              <input type="text" id="message_input" autofocus placeholder="Digite sua tag aqui"/>
+            </label>
+          </div>
+          <div class="chat__send__button">
+            <button id="send_button">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./dist/index.js"></script>
+  </body>
+</html>
