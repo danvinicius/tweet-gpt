@@ -1,5 +1,14 @@
 @import 'main.css';
 
+.logout__button {
+    position: fixed;
+    top: 1em;
+    right: 2em;
+    color: var(--secondary-text-color);
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .chat__container {
     border-radius: .75em;
     background: linear-gradient(136deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.70) 0.01%, rgba(255, 255, 255, 0.20) 100%);
@@ -13,13 +22,14 @@
 }
 
 .chat {
-    height: 55vh;
+    height: 60vh;
     overflow: hidden;
 }
 
 .chat__inner {
     max-height: 500px;
     overflow-y: scroll;
+    padding: 0 1em;
 }
 
 .chat__message__container {
@@ -66,12 +76,12 @@
     margin-top: 0.45em;
 }
 
-.left {
+.left .message {
     margin-right: auto;
     border-radius: 0 .75em .75em .75em;
 }
 
-.right {
+.right .message {
     margin-left: auto;
     border-radius: .75em 0 .75em .75em;
 }
@@ -105,6 +115,6 @@
 
     .chat__container {
         width: 40em;
-        padding: 2.1em 4.4em;
+        padding: 2.1em 3em;
     }
 }
