@@ -8,33 +8,34 @@
   </head>
   <body>
     <div class="app__container">
+      <a href="login.html" class="logout__button">Logout</a>
       <div class="chat__container">
         <div class="chat">
           <div class="chat__inner">
             <div class="chat__inner__container">
-              <div class="chat__message__container tweet">
+              <div class="chat__message__container left tweet">
                 <img
-                  src="/img/logo-do-twitter.svg"
+                  src="./img/logo-do-twitter.svg"
                   alt="Logo do twitter"
                   title="Twitter"
                 />
-                <div class="message left">
+                <div class="message">
                   <span class="message__twitter__user">@dzn__0</span>
                   <p>Olá, mundo</p>
                   <div class="message__twitter__icons">
-                    <img src="/img/comentario.svg" alt="" />
-                    <img src="/img/retweet.svg" alt="" />
-                    <img src="/img/curtida.svg" alt="" />
+                    <img src="./img/comentario.svg" alt="" />
+                    <img src="./img/retweet.svg" alt="" />
+                    <img src="./img/curtida.svg" alt="" />
                   </div>
                 </div>
               </div>
-              <div class="chat__message__container bot">
+              <div class="chat__message__container left bot">
                 <img
-                  src="/img/cabeca-do-bot.svg"
+                  src="./img/cabeca-do-bot.svg"
                   alt="Ícone de robô"
                   title="Tweet GPT"
                 />
-                <div class="message left">
+                <div class="message">
                   <p>
                     Olá, twitter
                   </p>
@@ -55,6 +56,6 @@
         </div>
       </div>
     </div>
-    <script src="./dist/index.js"></script>
+    <script src="./dist/chat.js"></script>
   </body>
 </html>
