@@ -1,91 +1,165 @@
+from dotenv import load_dotenv
+
+
+load_dotenv()
+from os import environ
 from flask import request, jsonify
+import flask
 from app import app, db
 
 from app.services import ai_analysis
+
 ai = ai_analysis.AI()
 
 from app.services import social_media
-media = social_media.SocialMedia()
 
+media = social_media.SocialMedia()
 
 import mysql.connector
 import bcrypt
+import jwt
+
+secret = environ['JWT_SECRET']
+
 
 @app.route("/")
 def root():
     return "<h1>Flask API</h1>"
 
 
-@app.route("/usuarios", methods=["POST", "GET"])
+@app.route("/usuarios", methods=["POST"])
 def cadastro():
-    if request.method == "POST" and 'name' in request.form and 'email' in request.form and 'password' in request.form:
-        name = request.form.get("name")
-        email = request.form.get("email")
-        password = request.form.get("password")
-
+    if request.method == "POST":
         try:
-            senha_bytes = password.encode('utf-8')
+            data = request.get_json(silent=False)
+            nome = data["nome"]
+            email = data["email"]
+            senha = data["senha"]
+
+            if type(email) != str or type(nome) != str or type(senha) != str:
+                return jsonify({"error": "Informações inválidas"}), 400
+
+            senha_bytes = senha.encode("utf-8")
             senha_hash = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
 
             cursor = db.cursor()
 
-            sql = "INSERT INTO User (name, email, senha) VALUES (%s, %s, %s)"
-            val = (name, email, senha_hash)
+            sql = "INSERT INTO User (nome, email, senha) VALUES (%s, %s, %s)"
+            val = (nome, email, senha_hash)
             cursor.execute(sql, val)
 
             db.commit()
+
+            encoded_jwt = jwt.encode({"email": email}, secret or 'secret', algorithm="HS256")
+
+            return (
+                jsonify(
+                    {
+                        "message": {"token": encoded_jwt},
+                    }
+                ),
+                200,
+            )
+        except KeyError as e:
+            print(e)
+            return jsonify({"error": "Informações insuficientes"}), 400
+
         except mysql.connector.Error as e:
             print(e)
-            return "Erro! O cadastro não foi realizado."
+            return (
+                jsonify(
+                    {
+                        "error": "Erro! O cadastro não foi realizado.",
+                    }
+                ),
+                500,
+            )
 
-        return "Cadastro realizado!"
-            
+    return None
 
 
 @app.route("/usuarios/login", methods=["POST"])
 def login():
-    if request.method == "POST" and 'email' in request.form and 'password' in request.form:
-        email = request.form.get("email")
-        password = request.form.get("password")
-
+    if request.method == "POST":
         try:
-            
+            data = request.get_json(silent=False)
+            email = data["email"]
+            senha = data["senha"]
+
+            if type(email) != str or type(senha) != str:
+                return jsonify({"error": "Informações inválias"}), 400
+
             cursor = db.cursor()
-            cursor.execute("SELECT * FROM User WHERE email=%s", (email, ))
+            cursor.execute("SELECT * FROM User WHERE email=%s", (email,))
             resultado = cursor.fetchall()
-            print(password.encode('utf-8'))
-            print(resultado[0][2].encode('utf-8'))
             if not resultado:
-                raise Exception("Usuário e/ou senha incorreto(a/s)")
-            
-            if not bcrypt.checkpw(password.encode('utf-8'), resultado[0][3].encode('utf-8')):
-                raise Exception("Usuário e/ou senha incorreto(a/s)")
+                return jsonify({"error": "Usuário não econtrado"}), 400
+
+            if not bcrypt.checkpw(
+                senha.encode("utf-8"), resultado[0][3].encode("utf-8")
+            ):
+                return jsonify({"error": "Senha incorreta"}), 400
+
+            encoded_jwt = jwt.encode({"email": email}, secret or 'secret', algorithm="HS256")
+            return jsonify({"message": {"token": encoded_jwt}}), 200
+
+        except KeyError as e:
+            print(e)
+            return jsonify({"error": "Informações insuficientes"}), 400
 
         except mysql.connector.Error as e:
             print(e)
-            return "Erro! O Login não foi realizado."
+            return jsonify({"error": "Erro! O Login não foi realizado."}), 500
+    return None
 
-        return "Login realizado!"
 
 # ex: http://localhost:5000/search?tag=brasil
-@app.route('/search')
+@app.route("/search")
 def search_tweet():
     try:
-        query = request.args.get('tag')
-        tag = '#' + query
+        headers = flask.request.headers
+        bearer = headers.get("Authorization")
         
+        if (bearer == None or len(bearer.split()) < 2):
+            return jsonify({"error": "Usuario não autorizado"}), 400
+
+        token = bearer.split()[1]
+            
+        decoded_token = jwt.decode(token, secret or 'secret', algorithms=["HS256"])
+        
+        email = decoded_token['email']
+        
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM User WHERE email=%s", (email,))
+        resultado = cursor.fetchall()
+        
+        if not resultado:
+            return jsonify({"error": "Usuario não autorizado"}), 400
+
+        query = request.args.get("tag")
+        tag = "#" + query
+
         tweet = media.fetch_from_twitter(tag)
         chatgpt_analysis = ai.analise_chat_gpt(tweet[1])
 
-        return jsonify(
-            {
-                'res': {
-                    'tag': tag,
-                    'tweet_id': tweet[0],
-                    'tweet_text': tweet[1],
-                    'analise': chatgpt_analysis
+        return (
+            jsonify(
+                {
+                    "res": {
+                        "tag": tag,
+                        "tweet_id": tweet[0],
+                        "tweet_text": tweet[1],
+                        "user": tweet[2],
+                        "date": tweet[3],
+                        "analysis": chatgpt_analysis,
+                    }
                 }
-            }
+            ),
+            200,
         )
-    except:
-        return jsonify({'res': 'Houve um erro. Tente novamente mais tarde.'})
+    except (KeyError, jwt.exceptions.InvalidTokenError, jwt.exceptions.DecodeError, jwt.exceptions.InvalidSignatureError, jwt.exceptions.ExpiredSignatureError) as e:
+        print(e)
+        return jsonify({"error": "Usuario não autorizado"}), 400
+    except Exception as e:
+        print(e)
+        return jsonify({"res": "Houve um erro. Tente novamente mais tarde."}), 500

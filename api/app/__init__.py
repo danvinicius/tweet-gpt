@@ -4,14 +4,22 @@ from flask_script import Manager
 
 import mysql.connector
 
+from dotenv import load_dotenv
+load_dotenv()
+from os import environ
+host = environ['DB_HOST']
+user = environ['DB_USER']
+password = environ['DB_PASSWORD']
+database = environ['DB_NAME']
+
 app = Flask(__name__)
 app.config.from_object('config')
 
 db  = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="suasenhaaq", #trocar
-  database="tweet_gpt"
+  host=host,
+  user=user,
+  password=password,
+  database=database
 )
 
 manager = Manager(app)
