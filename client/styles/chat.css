@@ -113,6 +113,10 @@
         align-items: center;
     }
 
+    .chat__inner {
+        padding: 0 1em 3em;
+    }
+
     .chat__container {
         width: 40em;
         padding: 2.1em 3em;

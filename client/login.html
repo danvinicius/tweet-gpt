@@ -21,21 +21,40 @@
           </div>
         </div>
         <div class="form__body">
-          <form action="" class="form">
+          <form class="form">
             <label for="email" class="form__label">
-              <input type="text" id="email" placeholder="E-mail" class="form__input" />
+              <input
+                required
+                autofocus
+                type="text"
+                id="email"
+                placeholder="E-mail"
+                class="form__input"
+              />
             </label>
             <label for="senha" class="form__label">
-              <input type="password" id="senha" placeholder="Senha" class="form__input" />
+              <input
+                required
+                type="password"
+                id="senha"
+                placeholder="Senha"
+                class="form__input"
+              />
             </label>
-            <button class="form__button">Entrar</button>
+            <div class="form__button__error__container">
+              <span class="form__error" id="error"></span>
+              <button class="form__button" id="login_btn">Entrar</button>
+            </div>
           </form>
         </div>
         <div class="form__footer">
           <p>Não possui uma conta?</p>
-          <a href="cadastro.html" class="form__footer__link">Cadastre-se agora</a>
+          <a href="cadastro.html" class="form__footer__link"
+            >Cadastre-se agora</a
+          >
         </div>
       </div>
     </div>
+    <script src="./dist/login.js"></script>
   </body>
 </html>

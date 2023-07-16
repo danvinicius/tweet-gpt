@@ -40,6 +40,16 @@
     background: var(--secondary-text-color);
 }
 
+.form__button__error__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form__error {
+    color: var(--error-color);
+}
+
 .form__button {
     margin-top: .6em;
     background: var(--main-button-color);
@@ -48,6 +58,7 @@
     justify-content: center;
     align-items: center;
     color: var(--secondary-text-color);
+    width: 100%;
 }
 
 .form__footer {
