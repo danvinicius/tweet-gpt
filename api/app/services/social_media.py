@@ -26,9 +26,7 @@ class SocialMedia:
 
     def fetch_from_twitter(self, tag):
         try:
-            tweets = self.client.search_tweets(tag, geocode="-14.2350,-51.9253,1500km")
-            id_primeiro_tweet = tweets[0].id
-            tweet = api.get_status(id_primeiro_tweet)
-            return [id_primeiro_tweet, tweet.text, tweet.user.screen_name, tweet.created_at]
+            tweets = self.client.search_tweets(tag, geocode="-14.2350,-51.9253,1500km", tweet_mode='extended')
+            return [tweets[0].id, tweets[0].full_text, tweets[0].user.screen_name, tweets[0].created_at]
         except:
             print('Erro ao buscar tweets.')

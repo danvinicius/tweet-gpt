@@ -1,6 +1,7 @@
 from flask import Flask
 
 from flask_script import Manager
+from flask_cors import CORS
 
 import mysql.connector
 
@@ -13,6 +14,8 @@ password = environ['DB_PASSWORD']
 database = environ['DB_NAME']
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config.from_object('config')
 
 db  = mysql.connector.connect(

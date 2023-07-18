@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-
+from flask_cors import cross_origin
 load_dotenv()
 from os import environ
 from flask import request, jsonify
@@ -26,8 +26,8 @@ secret = environ['JWT_SECRET']
 def root():
     return "<h1>Flask API</h1>"
 
-
 @app.route("/usuarios", methods=["POST"])
+@cross_origin()
 def cadastro():
     if request.method == "POST":
         try:
@@ -50,7 +50,7 @@ def cadastro():
 
             db.commit()
 
-            encoded_jwt = jwt.encode({"email": email}, secret or 'secret', algorithm="HS256")
+            encoded_jwt = jwt.encode({"email": email, "exp": 604800000 }, secret or 'secret', algorithm="HS256")
 
             return (
                 jsonify(
@@ -69,7 +69,7 @@ def cadastro():
             return (
                 jsonify(
                     {
-                        "error": "Erro! O cadastro não foi realizado.",
+                        "error": "Usuário já cadastrado. Faça login.",
                     }
                 ),
                 500,
@@ -77,8 +77,8 @@ def cadastro():
 
     return None
 
-
 @app.route("/usuarios/login", methods=["POST"])
+@cross_origin()
 def login():
     if request.method == "POST":
         try:
@@ -93,14 +93,14 @@ def login():
             cursor.execute("SELECT * FROM User WHERE email=%s", (email,))
             resultado = cursor.fetchall()
             if not resultado:
-                return jsonify({"error": "Usuário não econtrado"}), 400
+                return jsonify({"error": "Usuário não encontrado"}), 400
 
             if not bcrypt.checkpw(
                 senha.encode("utf-8"), resultado[0][3].encode("utf-8")
             ):
                 return jsonify({"error": "Senha incorreta"}), 400
 
-            encoded_jwt = jwt.encode({"email": email}, secret or 'secret', algorithm="HS256")
+            encoded_jwt = jwt.encode({"email": email, "exp": 604800000 }, secret or 'secret', algorithm="HS256")
             return jsonify({"message": {"token": encoded_jwt}}), 200
 
         except KeyError as e:
@@ -109,12 +109,13 @@ def login():
 
         except mysql.connector.Error as e:
             print(e)
-            return jsonify({"error": "Erro! O Login não foi realizado."}), 500
+            return jsonify({"error": "Erro ao realizar cadastro. Tente novamente mais tarde."}), 500
     return None
 
 
 # ex: http://localhost:5000/search?tag=brasil
 @app.route("/search")
+@cross_origin()
 def search_tweet():
     try:
         headers = flask.request.headers
@@ -137,7 +138,7 @@ def search_tweet():
             return jsonify({"error": "Usuario não autorizado"}), 400
 
         query = request.args.get("tag")
-        tag = "#" + query
+        tag = query
 
         tweet = media.fetch_from_twitter(tag)
         chatgpt_analysis = ai.analise_chat_gpt(tweet[1])
@@ -145,7 +146,7 @@ def search_tweet():
         return (
             jsonify(
                 {
-                    "res": {
+                    "message": {
                         "tag": tag,
                         "tweet_id": tweet[0],
                         "tweet_text": tweet[1],
@@ -162,4 +163,4 @@ def search_tweet():
         return jsonify({"error": "Usuario não autorizado"}), 400
     except Exception as e:
         print(e)
-        return jsonify({"res": "Houve um erro. Tente novamente mais tarde."}), 500
+        return jsonify({"error": "Houve um erro. Tente novamente mais tarde."}), 500
