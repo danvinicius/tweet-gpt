@@ -50,7 +50,7 @@ def cadastro():
 
             db.commit()
 
-            encoded_jwt = jwt.encode({"email": email, "exp": 604800000 }, secret or 'secret', algorithm="HS256")
+            encoded_jwt = jwt.encode({"email": email }, secret or 'secret', algorithm="HS256")
 
             return (
                 jsonify(
@@ -100,7 +100,7 @@ def login():
             ):
                 return jsonify({"error": "Senha incorreta"}), 400
 
-            encoded_jwt = jwt.encode({"email": email, "exp": 604800000 }, secret or 'secret', algorithm="HS256")
+            encoded_jwt = jwt.encode({"email": email }, secret or 'secret', algorithm="HS256")
             return jsonify({"message": {"token": encoded_jwt}}), 200
 
         except KeyError as e:
