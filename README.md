@@ -39,7 +39,21 @@ DB_NAME=tweet_gpt
 py run.py runserver
 ```
 ##
-5. Rode o cliente com o **Live Server** ou acessando a página **login.html**
+5. Na pasta cliente, instale as dependências com o NPM ou YARN
+```bash
+npm install
+# ou
+yarn install
+```
+##
+6. Faça o build do Typescript
+```bash
+npm run build
+# ou
+yarn build
+```
+##
+7. Rode o cliente com o **Live Server** ou acessando a página **login.html**
 ##
 #### Feito por [Daniel Vinicius](https://github.com/danvinicius) e [Cássia Mariane](https://github.com/cassiamariane)
 
