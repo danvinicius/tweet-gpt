@@ -1,5 +1,5 @@
 # tweet-gpt
-Trabalho final da disciplina Web 3
+Chatbot integrado com o ChatGPT para comentar tweets dado um assunto ou tag específica do Twitter. O projeto faz parte do trabalho final da disciplina Sistemas Web 3
 
 ## Como rodar
 
